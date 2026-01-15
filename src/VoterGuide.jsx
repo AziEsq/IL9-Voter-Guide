@@ -229,10 +229,7 @@ export default function VoterGuide() {
           {/* Filters Sidebar */}
           <aside className={`lg:col-span-3 mb-8 lg:mb-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-8" style={{ 
-              border: '3px solid #e2e8f0',
-              maxHeight: 'calc(100vh - 6rem)',
-              display: 'flex',
-              flexDirection: 'column'
+              border: '3px solid #e2e8f0'
             }}>
               <h2 className="text-xl font-bold mb-6" style={{ color: '#1e3a8a' }}>
                 Filter Options
@@ -285,7 +282,10 @@ export default function VoterGuide() {
                     </button>
                   )}
                 </div>
-                <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
+                <div className="space-y-2 max-h-64 overflow-y-auto pr-2" style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#3b82f6 #e2e8f0'
+                }}>
                   {candidates.map(candidate => (
                     <label
                       key={candidate.id}
@@ -322,7 +322,10 @@ export default function VoterGuide() {
                     </button>
                   )}
                 </div>
-                <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
+                <div className="space-y-2 max-h-48 overflow-y-auto pr-2" style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#3b82f6 #e2e8f0'
+                }}>
                   {allTopics.map(topic => (
                     <label
                       key={topic}
