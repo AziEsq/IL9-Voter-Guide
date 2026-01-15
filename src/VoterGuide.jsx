@@ -6,7 +6,7 @@ import { Check, ExternalLink, Filter, X, RefreshCw } from 'lucide-react';
 // =============================================================================
 const AIRTABLE_CONFIG = {
   baseId: 'appJaKQWORmGpA8Kh',
-  personalAccessToken: 'YOUR_TOKEN_HERE', // ⬅️ PASTE YOUR TOKEN HERE (starts with "pat...")
+  personalAccessToken: 'pat03ie7FdOrFByOg.0daffb58032c336577a287f00b8d5cb5e8afe8e93573f608be8fe90acdf5d814', // ⬅️ PASTE YOUR TOKEN HERE (starts with "pat...")
   candidatesTableName: 'Candidates',
   statementsTableName: 'Position Statements'
 };
