@@ -39,18 +39,21 @@ export default function VoterGuide() {
       const candidatesData = await candidatesResponse.json();
       
       // Transform Airtable data to our format
-      const candidatesFormatted = candidatesData.records.map(record => ({
-        id: record.fields.CandidateKey,
-        firstName: record.fields.FirstName || '',
-        lastName: record.fields.LastName || '',
-        party: record.fields.Party || '',
-        website: record.fields.Website || '',
-        email: record.fields.EmailAddress || '',
-        facebook: record.fields.Facebook || '',
-        twitter: record.fields.Twitter || '',
-        instagram: record.fields.Instagram || '',
-        photoUrl: record.fields.Photo ? record.fields.Photo[0]?.url : null
-      }));
+      const candidatesFormatted = candidatesData.records.map(record => {
+        console.log('Candidate:', record.fields.FirstName, 'Photo field:', record.fields.Photo);
+        return {
+          id: record.fields.CandidateKey,
+          firstName: record.fields.FirstName || '',
+          lastName: record.fields.LastName || '',
+          party: record.fields.Party || '',
+          website: record.fields.Website || '',
+          email: record.fields.EmailAddress || '',
+          facebook: record.fields.Facebook || '',
+          twitter: record.fields.Twitter || '',
+          instagram: record.fields.Instagram || '',
+          photoUrl: record.fields.Photo ? record.fields.Photo[0]?.url : null
+        };
+      });
 
       setCandidates(candidatesFormatted);
 
@@ -443,8 +446,35 @@ export default function VoterGuide() {
                                 background: '#fafafa'
                               }}
                             >
-                              <div className="flex items-start justify-between mb-3">
-                                <div>
+                              <div className="flex items-start gap-4 mb-3">
+                                {/* Candidate Photo */}
+                                {candidate.photoUrl ? (
+                                  <img 
+                                    src={candidate.photoUrl} 
+                                    alt={`${candidate.firstName} ${candidate.lastName}`}
+                                    className="rounded-full"
+                                    style={{ 
+                                      width: '64px', 
+                                      height: '64px', 
+                                      objectFit: 'cover',
+                                      border: '3px solid #3b82f6'
+                                    }}
+                                  />
+                                ) : (
+                                  <div 
+                                    className="rounded-full flex items-center justify-center font-bold text-white"
+                                    style={{ 
+                                      width: '64px', 
+                                      height: '64px',
+                                      background: `hsl(${(candidate.id * 137) % 360}, 65%, 55%)`,
+                                      border: '3px solid #e2e8f0'
+                                    }}
+                                  >
+                                    {candidate.firstName[0]}{candidate.lastName[0]}
+                                  </div>
+                                )}
+                                
+                                <div className="flex-1">
                                   <h4 className="font-bold text-lg" style={{ color: '#1e3a8a' }}>
                                     {candidate.firstName} {candidate.lastName}
                                   </h4>
@@ -539,21 +569,54 @@ export default function VoterGuide() {
                             background: idx % 2 === 0 ? '#ffffff' : '#f9fafb',
                             borderRight: '2px solid #e2e8f0'
                           }}>
-                            <div className="font-bold text-sm" style={{ color: '#1e3a8a' }}>
-                              {candidate.firstName} {candidate.lastName}
+                            <div className="flex items-center gap-3">
+                              {/* Candidate Photo */}
+                              {candidate.photoUrl ? (
+                                <img 
+                                  src={candidate.photoUrl} 
+                                  alt={`${candidate.firstName} ${candidate.lastName}`}
+                                  className="rounded-full"
+                                  style={{ 
+                                    width: '48px', 
+                                    height: '48px', 
+                                    objectFit: 'cover',
+                                    border: '2px solid #3b82f6',
+                                    flexShrink: 0
+                                  }}
+                                />
+                              ) : (
+                                <div 
+                                  className="rounded-full flex items-center justify-center font-bold text-white text-xs"
+                                  style={{ 
+                                    width: '48px', 
+                                    height: '48px',
+                                    background: `hsl(${(candidate.id * 137) % 360}, 65%, 55%)`,
+                                    border: '2px solid #e2e8f0',
+                                    flexShrink: 0
+                                  }}
+                                >
+                                  {candidate.firstName[0]}{candidate.lastName[0]}
+                                </div>
+                              )}
+                              
+                              <div>
+                                <div className="font-bold text-sm" style={{ color: '#1e3a8a' }}>
+                                  {candidate.firstName} {candidate.lastName}
+                                </div>
+                                {candidate.website && (
+                                  <a
+                                    href={`https://${candidate.website.replace(/^https?:\/\//, '')}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs flex items-center gap-1 hover:underline mt-1"
+                                    style={{ color: '#3b82f6' }}
+                                  >
+                                    Website
+                                    <ExternalLink size={10} />
+                                  </a>
+                                )}
+                              </div>
                             </div>
-                            {candidate.website && (
-                              <a
-                                href={`https://${candidate.website.replace(/^https?:\/\//, '')}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-xs flex items-center gap-1 hover:underline mt-1"
-                                style={{ color: '#3b82f6' }}
-                              >
-                                Website
-                                <ExternalLink size={10} />
-                              </a>
-                            )}
                           </td>
                           {filteredTopics.map(topic => {
                             const statements = getStatementsForCandidate(candidate.id, topic);
