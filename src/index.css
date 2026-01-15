@@ -171,3 +171,21 @@ table {
 .space-y-2::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
 }
+
+/* Scrollbar for the main sidebar container */
+.sticky::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sticky::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sticky::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.sticky::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
