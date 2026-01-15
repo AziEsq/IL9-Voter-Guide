@@ -229,7 +229,9 @@ export default function VoterGuide() {
           {/* Filters Sidebar */}
           <aside className={`lg:col-span-3 mb-8 lg:mb-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-8" style={{ 
-              border: '3px solid #e2e8f0'
+              border: '3px solid #e2e8f0',
+              maxHeight: 'calc(100vh - 4rem)',
+              overflowY: 'auto'
             }}>
               <h2 className="text-xl font-bold mb-6" style={{ color: '#1e3a8a' }}>
                 Filter Options
