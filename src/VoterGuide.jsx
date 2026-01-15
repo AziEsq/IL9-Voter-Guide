@@ -48,7 +48,8 @@ export default function VoterGuide() {
         email: record.fields.EmailAddress || '',
         facebook: record.fields.Facebook || '',
         twitter: record.fields.Twitter || '',
-        instagram: record.fields.Instagram || ''
+        instagram: record.fields.Instagram || '',
+        photoUrl: record.fields.Photo ? record.fields.Photo[0]?.url : null
       }));
 
       setCandidates(candidatesFormatted);
@@ -501,7 +502,10 @@ export default function VoterGuide() {
               <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ 
                 border: '3px solid #e2e8f0'
               }}>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto" style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#3b82f6 #e2e8f0'
+                }}>
                   <table className="w-full">
                     <thead>
                       <tr style={{ background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)' }}>
