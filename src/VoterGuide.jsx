@@ -96,7 +96,10 @@ export default function VoterGuide() {
           ? record.fields.CandidateKey[0]
           : (record.fields.CandidateKey || ''),
       
-        topic: record.fields.Topic || '',
+        topic: Array.isArray(record.fields.TopicName)
+        ? (record.fields.TopicName[0] || '')
+        : (record.fields.TopicName || record.fields.Topic || ''),
+
         statement: record.fields.Statement || '',
         label: record.fields.Label || '',
       
