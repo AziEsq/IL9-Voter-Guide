@@ -42,7 +42,7 @@ export default function VoterGuide() {
       const candidatesFormatted = candidatesData.records.map(record => {
         console.log('Candidate:', record.fields.FirstName, 'Photo field:', record.fields.Photo);
         return {
-          id: record.fields.CandidateKey,
+          id: record.id, // ✅ Airtable record id
           firstName: record.fields.FirstName || '',
           lastName: record.fields.LastName || '',
           party: record.fields.Party || '',
@@ -87,14 +87,21 @@ export default function VoterGuide() {
         console.log('First statement fields:', allStatements[0].fields);
       }
       
-      // Transform statements data
       const statementsFormatted = allStatements.map(record => ({
-        key: record.fields.StatementKey,
-        candidateId: record.fields.CandidateID,
+        // you renamed StatementKey -> StatementID
+        key: record.fields.StatementID || record.fields.StatementKey || record.id,
+      
+        // CandidateKey is a Link field => Airtable returns an array of linked record ids
+        candidateId: Array.isArray(record.fields.CandidateKey)
+          ? record.fields.CandidateKey[0]
+          : (record.fields.CandidateKey || ''),
+      
         topic: record.fields.Topic || '',
         statement: record.fields.Statement || '',
         label: record.fields.Label || '',
-        sourceLink: record.fields.SourceLink || '',
+      
+        // you renamed sourceURL -> SourceURL
+        sourceURL: record.fields.SourceURL || record.fields.sourceURL || '',
         sourceType: record.fields.SourceType || ''
       }));
 
@@ -508,10 +515,10 @@ export default function VoterGuide() {
                                     <span className="px-2 py-0.5 rounded" style={{ background: '#f1f5f9' }}>
                                       {stmt.sourceType}
                                     </span>
-                                    {stmt.sourceLink && (
+                                    {stmt. && (
                                       <>
                                         <span>•</span>
-                                        <span>{stmt.sourceLink}</span>
+                                        <span>{stmt.}</span>
                                       </>
                                     )}
                                   </div>
