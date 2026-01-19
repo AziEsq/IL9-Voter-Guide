@@ -515,12 +515,19 @@ export default function VoterGuide() {
                                     <span className="px-2 py-0.5 rounded" style={{ background: '#f1f5f9' }}>
                                       {stmt.sourceType}
                                     </span>
-                                    {stmt. && (
+                                   {stmt.sourceURL && (
                                       <>
-                                        <span>•</span>
-                                        <span>{stmt.}</span>
-                                      </>
-                                    )}
+                                      <span>•</span>
+                                      <a
+                                        href={stmt.sourceURL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:underline"
+                                      >
+                                        Source
+                                      </a>
+                                    </>
+                                  )}
                                   </div>
                                 </div>
                               ))}
