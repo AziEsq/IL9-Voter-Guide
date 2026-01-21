@@ -2,6 +2,63 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Check, ExternalLink, Filter, X, RefreshCw } from 'lucide-react';
 import { AIRTABLE_CONFIG } from './config';
 
+// Tooltip Component
+function Tooltip({ children, text }) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  if (!text) return children;
+
+  return (
+    <div
+      style={{ position: 'relative', display: 'inline-block' }}
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+    >
+      {children}
+      {isVisible && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginBottom: '8px',
+            padding: '12px 16px',
+            background: '#1e293b',
+            color: '#fff',
+            borderRadius: '8px',
+            fontSize: '13px',
+            lineHeight: '1.5',
+            maxWidth: '350px',
+            width: 'max-content',
+            minWidth: '200px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            zIndex: 1000,
+            pointerEvents: 'none',
+            whiteSpace: 'normal'
+          }}
+        >
+          {text}
+          {/* Tooltip arrow */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 0,
+              height: 0,
+              borderLeft: '6px solid transparent',
+              borderRight: '6px solid transparent',
+              borderTop: '6px solid #1e293b'
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function VoterGuide() {
   const [candidates, setCandidates] = useState([]);
   const [statements, setStatements] = useState([]);
@@ -521,14 +578,16 @@ export default function VoterGuide() {
                                    {stmt.sourceURL && (
                                       <>
                                       <span>•</span>
-                                      <a
-                                        href={stmt.sourceURL}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:underline"
-                                      >
-                                        Source
-                                      </a>
+                                      <Tooltip text={stmt.statement}>
+                                        <a
+                                          href={stmt.sourceURL}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="hover:underline"
+                                        >
+                                          Source
+                                        </a>
+                                      </Tooltip>
                                     </>
                                   )}
                                   </div>
@@ -660,10 +719,25 @@ export default function VoterGuide() {
                                         <p className="text-xs leading-relaxed mb-1" style={{ color: '#475569' }}>
                                           {stmt.statement}
                                         </p>
-                                        <div className="text-xs" style={{ color: '#94a3b8' }}>
+                                        <div className="flex items-center gap-1.5 text-xs" style={{ color: '#94a3b8' }}>
                                           <span className="px-1.5 py-0.5 rounded" style={{ background: '#f1f5f9' }}>
                                             {stmt.sourceType}
                                           </span>
+                                          {stmt.sourceURL && (
+                                            <>
+                                              <span>•</span>
+                                              <Tooltip text={stmt.statement}>
+                                                <a
+                                                  href={stmt.sourceURL}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="hover:underline"
+                                                >
+                                                  Source
+                                                </a>
+                                              </Tooltip>
+                                            </>
+                                          )}
                                         </div>
                                       </div>
                                     ))}
