@@ -147,19 +147,20 @@ export default function VoterGuide() {
       const statementsFormatted = allStatements.map(record => ({
         // you renamed StatementKey -> StatementID
         key: record.fields.StatementID || record.fields.StatementKey || record.id,
-      
+
         // CandidateKey is a Link field => Airtable returns an array of linked record ids
         candidateId: Array.isArray(record.fields.CandidateKey)
           ? record.fields.CandidateKey[0]
           : (record.fields.CandidateKey || ''),
-      
+
         topic: Array.isArray(record.fields.TopicName)
         ? (record.fields.TopicName[0] || '')
         : (record.fields.TopicName || record.fields.Topic || ''),
 
         statement: record.fields.Statement || '',
+        rawStatement: record.fields['Raw Statement'] || record.fields.RawStatement || '',
         label: record.fields.Label || '',
-      
+
         // you renamed sourceURL -> SourceURL
         sourceURL: record.fields.SourceURL || record.fields.sourceURL || '',
         sourceType: record.fields.SourceType || ''
@@ -578,7 +579,7 @@ export default function VoterGuide() {
                                    {stmt.sourceURL && (
                                       <>
                                       <span>•</span>
-                                      <Tooltip text={stmt.statement}>
+                                      <Tooltip text={stmt.rawStatement}>
                                         <a
                                           href={stmt.sourceURL}
                                           target="_blank"
@@ -726,7 +727,7 @@ export default function VoterGuide() {
                                           {stmt.sourceURL && (
                                             <>
                                               <span>•</span>
-                                              <Tooltip text={stmt.statement}>
+                                              <Tooltip text={stmt.rawStatement}>
                                                 <a
                                                   href={stmt.sourceURL}
                                                   target="_blank"
