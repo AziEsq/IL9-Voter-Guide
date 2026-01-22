@@ -606,21 +606,22 @@ export default function VoterGuide() {
 
             {/* Table View */}
             {viewMode === 'table' && (
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ 
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{
                 border: '3px solid #e2e8f0'
               }}>
                 {/* Scroll hint */}
                 <div className="bg-blue-50 px-4 py-2 text-xs font-medium" style={{ color: '#1e40af', borderBottom: '1px solid #3b82f6' }}>
                   💡 Tip: Scroll horizontally to see all topics →
                 </div>
-                <div 
-                  className="overflow-x-auto" 
-                  style={{
-                    scrollbarWidth: 'thin',
-                    scrollbarColor: '#3b82f6 #e2e8f0',
-                    overflowX: 'scroll' // Force scrollbar to always show
-                  }}
-                >
+                <div className="table-scroll-container">
+                  <div
+                    className="overflow-x-auto"
+                    style={{
+                      scrollbarWidth: 'thin',
+                      scrollbarColor: '#3b82f6 #cbd5e1',
+                      overflowX: 'auto'
+                    }}
+                  >
                   <table className="w-full">
                     <thead>
                       <tr style={{ background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)' }}>
@@ -755,6 +756,7 @@ export default function VoterGuide() {
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
             )}
