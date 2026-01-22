@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Check, ExternalLink, Filter, X, RefreshCw } from 'lucide-react';
 import { AIRTABLE_CONFIG } from './config';
 
@@ -69,10 +69,27 @@ export default function VoterGuide() {
   const [viewMode, setViewMode] = useState('cards');
   const [showFilters, setShowFilters] = useState(false);
 
+  // Refs for syncing table scroll
+  const topScrollRef = useRef(null);
+  const bottomScrollRef = useRef(null);
+
   // Fetch data from Airtable
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Sync scroll between top and bottom scrollbars
+  const handleTopScroll = () => {
+    if (topScrollRef.current && bottomScrollRef.current) {
+      bottomScrollRef.current.scrollLeft = topScrollRef.current.scrollLeft;
+    }
+  };
+
+  const handleBottomScroll = () => {
+    if (topScrollRef.current && bottomScrollRef.current) {
+      topScrollRef.current.scrollLeft = bottomScrollRef.current.scrollLeft;
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -613,8 +630,30 @@ export default function VoterGuide() {
                 <div className="bg-blue-50 px-4 py-2 text-xs font-medium" style={{ color: '#1e40af', borderBottom: '1px solid #3b82f6' }}>
                   💡 Tip: Scroll horizontally to see all topics →
                 </div>
+
+                {/* Top Scrollbar */}
+                <div
+                  ref={topScrollRef}
+                  onScroll={handleTopScroll}
+                  className="overflow-x-auto"
+                  style={{
+                    overflowY: 'hidden',
+                    height: '20px',
+                    borderBottom: '1px solid #e2e8f0',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: '#3b82f6 #cbd5e1'
+                  }}
+                >
+                  <div style={{
+                    width: `${200 + (filteredTopics.length * 300)}px`,
+                    height: '1px'
+                  }} />
+                </div>
+
                 <div className="table-scroll-container">
                   <div
+                    ref={bottomScrollRef}
+                    onScroll={handleBottomScroll}
                     className="overflow-x-auto"
                     style={{
                       scrollbarWidth: 'thin',
