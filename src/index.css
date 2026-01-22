@@ -190,31 +190,58 @@ table {
   background: #94a3b8;
 }
 
-/* Horizontal scrollbar for table view */
+/* Horizontal scrollbar for table view - ALWAYS VISIBLE */
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+
 .overflow-x-auto::-webkit-scrollbar {
-  height: 14px;
+  height: 16px; /* Increased from 14px */
+  -webkit-appearance: none;
 }
 
 .overflow-x-auto::-webkit-scrollbar-track {
-  background: #e2e8f0;
-  border-radius: 7px;
+  background: #cbd5e1; /* Darker track for better visibility */
+  border-radius: 8px;
+  margin: 0 12px;
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb {
   background: #3b82f6;
-  border-radius: 7px;
+  border-radius: 8px;
+  border: 3px solid #cbd5e1; /* Thicker border for better grip visual */
+  min-width: 50px; /* Ensure thumb is grabbable */
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
+  border-color: #94a3b8;
 }
 
-/* Add border to scrollbar thumb for better visibility */
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  border: 2px solid #e2e8f0;
+.overflow-x-auto::-webkit-scrollbar-thumb:active {
+  background: #1e40af;
 }
 
-/* Add margin to scrollbar track */
-.overflow-x-auto::-webkit-scrollbar-track {
-  margin: 0 10px;
+/* Force scrollbar to always show on macOS/webkit */
+.overflow-x-auto::-webkit-scrollbar-button {
+  display: block;
+  height: 0;
 }
+
+/* Scroll indicator shadow for right edge */
+.table-scroll-container {
+  position: relative;
+}
+
+.table-scroll-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 20px; /* Account for scrollbar */
+  width: 30px;
+  background: linear-gradient(to left, rgba(0,0,0,0.1), transparent);
+  pointer-events: none;
+  z-index: 5;
+}
+
