@@ -472,7 +472,7 @@ export default function VoterGuide() {
                     </button>
                   )}
                 </div>
-                <div className="space-y-2 max-h-48 overflow-y-auto pr-2" style={{
+                <div className="space-y-2 max-h-64 overflow-y-auto pr-2" style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#3b82f6 #e2e8f0'
                 }}>
