@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Check, ExternalLink, Filter, X, RefreshCw } from 'lucide-react';
+import { Check, ExternalLink, Filter, X, RefreshCw, Search } from 'lucide-react';
 import { AIRTABLE_CONFIG } from './config';
 
 // Tooltip Component
@@ -68,6 +68,7 @@ export default function VoterGuide() {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [viewMode, setViewMode] = useState('cards');
   const [showFilters, setShowFilters] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Refs for syncing table scroll
   const topScrollRef = useRef(null);
@@ -221,9 +222,15 @@ export default function VoterGuide() {
     return statements.filter(stmt => {
       const candidateMatch = selectedCandidates.length === 0 || selectedCandidates.includes(stmt.candidateId);
       const topicMatch = selectedTopics.length === 0 || selectedTopics.includes(stmt.topic);
-      return candidateMatch && topicMatch;
+
+      // Search match - check if query appears in either statement or rawStatement
+      const searchMatch = searchQuery.trim() === '' ||
+        stmt.statement.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        stmt.rawStatement.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return candidateMatch && topicMatch && searchMatch;
     });
-  }, [statements, selectedCandidates, selectedTopics]);
+  }, [statements, selectedCandidates, selectedTopics, searchQuery]);
 
   const getStatementsForCandidate = (candidateId, topic) => {
     return filteredStatements.filter(s => s.candidateId === candidateId && s.topic === topic);
@@ -273,9 +280,9 @@ export default function VoterGuide() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b-4" style={{ borderColor: '#1e40af' }}>
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-black tracking-tight" style={{ 
+              <h1 className="text-3xl font-black tracking-tight" style={{
                 color: '#1e3a8a',
                 fontFamily: '"IBM Plex Sans", sans-serif',
                 letterSpacing: '-0.02em'
@@ -299,7 +306,7 @@ export default function VoterGuide() {
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all"
-                style={{ 
+                style={{
                   background: showFilters ? '#1e40af' : '#fff',
                   color: showFilters ? '#fff' : '#1e40af',
                   border: '2px solid #1e40af'
@@ -309,6 +316,44 @@ export default function VoterGuide() {
                 {showFilters ? 'Hide' : 'Filters'}
               </button>
             </div>
+          </div>
+
+          {/* Search Bar */}
+          <div className="relative max-w-2xl">
+            <Search
+              size={20}
+              style={{
+                position: 'absolute',
+                left: '12px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: '#94a3b8'
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Search statements and positions..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full py-2 pl-10 pr-10 rounded-lg text-sm"
+              style={{
+                border: '2px solid #e2e8f0',
+                outline: 'none',
+                transition: 'border-color 0.2s'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+              onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2 top-1/2 p-1 rounded hover:bg-gray-100"
+                style={{ transform: 'translateY(-50%)' }}
+                title="Clear search"
+              >
+                <X size={16} style={{ color: '#94a3b8' }} />
+              </button>
+            )}
           </div>
         </div>
       </header>
