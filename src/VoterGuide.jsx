@@ -130,6 +130,9 @@ export default function VoterGuide() {
         };
       });
 
+      // Sort candidates alphabetically by last name
+      candidatesFormatted.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
       setCandidates(candidatesFormatted);
 
       // Fetch Position Statements with pagination
@@ -280,7 +283,7 @@ export default function VoterGuide() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b-4" style={{ borderColor: '#1e40af' }}>
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-black tracking-tight" style={{
                 color: '#1e3a8a',
@@ -293,6 +296,55 @@ export default function VoterGuide() {
                 Compare candidates on the issues that matter to you
               </p>
             </div>
+
+            {/* Search Bar */}
+            <div className="relative flex-1 max-w-md hidden md:block">
+              <Search
+                size={18}
+                style={{
+                  position: 'absolute',
+                  left: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#94a3b8'
+                }}
+              />
+              <input
+                type="text"
+                placeholder="Search statements and positions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full py-2 pl-10 pr-10 rounded-lg text-sm"
+                style={{
+                  border: '2px solid #e2e8f0',
+                  outline: 'none',
+                  transition: 'border-color 0.2s'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 top-1/2 p-1 rounded-full transition-colors"
+                  style={{
+                    transform: 'translateY(-50%)',
+                    background: '#fee2e2',
+                    color: '#dc2626'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#fca5a5';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#fee2e2';
+                  }}
+                  title="Clear search"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+
             <div className="flex items-center gap-3">
               <button
                 onClick={fetchData}
@@ -316,44 +368,6 @@ export default function VoterGuide() {
                 {showFilters ? 'Hide' : 'Filters'}
               </button>
             </div>
-          </div>
-
-          {/* Search Bar */}
-          <div className="relative max-w-2xl">
-            <Search
-              size={20}
-              style={{
-                position: 'absolute',
-                left: '12px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: '#94a3b8'
-              }}
-            />
-            <input
-              type="text"
-              placeholder="Search statements and positions..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-2 pl-10 pr-10 rounded-lg text-sm"
-              style={{
-                border: '2px solid #e2e8f0',
-                outline: 'none',
-                transition: 'border-color 0.2s'
-              }}
-              onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-              onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-2 top-1/2 p-1 rounded hover:bg-gray-100"
-                style={{ transform: 'translateY(-50%)' }}
-                title="Clear search"
-              >
-                <X size={16} style={{ color: '#94a3b8' }} />
-              </button>
-            )}
           </div>
         </div>
       </header>
