@@ -283,8 +283,8 @@ export default function VoterGuide() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b-4" style={{ borderColor: '#1e40af' }}>
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between gap-4">
-            <div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex-shrink-0">
               <h1 className="text-3xl font-black tracking-tight" style={{
                 color: '#1e3a8a',
                 fontFamily: '"IBM Plex Sans", sans-serif',
@@ -298,7 +298,7 @@ export default function VoterGuide() {
             </div>
 
             {/* Search Bar */}
-            <div className="relative flex-1 max-w-md hidden md:block">
+            <div className="relative w-full sm:flex-1 sm:max-w-md">
               <Search
                 size={18}
                 style={{
@@ -345,15 +345,15 @@ export default function VoterGuide() {
               )}
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-shrink-0">
               <button
                 onClick={fetchData}
-                className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all hover:opacity-80"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all hover:opacity-80"
                 style={{ background: '#10b981', color: '#fff' }}
                 title="Refresh data from Airtable"
               >
                 <RefreshCw size={16} />
-                Refresh
+                <span className="hidden sm:inline">Refresh</span>
               </button>
               <button
                 onClick={() => setShowFilters(!showFilters)}
