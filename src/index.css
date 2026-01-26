@@ -102,6 +102,7 @@ body {
 .flex-wrap { flex-wrap: wrap; }
 .align-top { vertical-align: top; }
 .sticky { position: sticky; }
+.relative { position: relative; }
 .top-8 { top: 2rem; }
 .left-0 { left: 0; }
 .z-10 { z-index: 10; }
